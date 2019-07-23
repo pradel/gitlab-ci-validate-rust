@@ -8,7 +8,9 @@ Checks if your .gitlab-ci.yml file is valid.
 
 ## Install
 
-TODO
+```
+$ cargo install gitlab-ci-validate
+```
 
 ## Usage
 
