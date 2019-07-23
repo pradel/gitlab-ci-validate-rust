@@ -80,8 +80,11 @@ fn check_gitlab(file: &str, host: &str, private_token: Option<&str>) -> Result<(
 
     // We check the response from gitlab
     if data.status == "invalid" {
-        eprintln!("{:#?}", data.errors);
-        return Err(failure::err_msg(format!("{} is invalid", file)));
+        let mut error_msg = format!("{} is invalid", file);
+        for error in &data.errors {
+            error_msg = error_msg + "\n- " + error;
+        }
+        return Err(failure::err_msg(error_msg));
     }
 
     println!("{} is valid", file);
