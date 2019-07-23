@@ -2,6 +2,10 @@
 name = "gitlab-ci-validate"
 version = "0.0.1"
 authors = ["pradel <pradel.leo@gmail.com>"]
+description = "Checks if your .gitlab-ci.yml file is valid."
+repository = "https://github.com/pradel/gitlab-ci-validate-rust"
+readme = "README.md"
+license = "MIT"
 edition = "2018"
 
 [dependencies]
