@@ -47,8 +47,8 @@ fn main() -> Result<(), ExitFailure> {
     // Gets a value for file path if supplied by user, or defaults to ".gitlab-ci.yml"
     let file = matches.value_of("FILE_PATH").unwrap_or(".gitlab-ci.yml");
 
-    // Gets a value for gitlab host if supplied by user, or defaults to "https://gitlab.com"
-    let host = matches.value_of("host").unwrap_or("https://gitlab.com");
+    // Gets a value for gitlab host if supplied by user
+    let host = matches.value_of("host");
 
     // Gets a value for gitlab private_token if supplied by user
     let private_token = matches.value_of("private_token");
@@ -56,7 +56,13 @@ fn main() -> Result<(), ExitFailure> {
     Ok(check_gitlab(file, host, private_token)?)
 }
 
-fn check_gitlab(file: &str, host: &str, private_token: Option<&str>) -> Result<(), failure::Error> {
+fn check_gitlab(
+    file: &str,
+    host_param: Option<&str>,
+    private_token: Option<&str>,
+) -> Result<(), failure::Error> {
+    let host = host_param.unwrap_or("https://gitlab.com");
+
     // Get the file content or fail if file not found
     let content = std::fs::read_to_string(file)
         .with_context(|_| format!("Could not read file `{}`", file))?;
@@ -94,26 +100,20 @@ fn check_gitlab(file: &str, host: &str, private_token: Option<&str>) -> Result<(
 #[test]
 fn it_fail_if_file_not_found() {
     let file = "test/doesnotexist.yml";
-    let host = "https://gitlab.com";
-    let private_token: Option<&str> = None;
-    let result = check_gitlab(file, host, private_token);
+    let result = check_gitlab(file, None, None);
     assert_eq!(result.is_err(), true);
 }
 
 #[test]
 fn it_fail_if_file_invalid() {
     let file = "test/.invalid-gitlab-ci.yml";
-    let host = "https://gitlab.com";
-    let private_token: Option<&str> = None;
-    let result = check_gitlab(file, host, private_token);
+    let result = check_gitlab(file, None, None);
     assert_eq!(result.is_err(), true);
 }
 
 #[test]
 fn it_succeed_if_file_valid() {
     let file = "test/.gitlab-ci.yml";
-    let host = "https://gitlab.com";
-    let private_token: Option<&str> = None;
-    let result = check_gitlab(file, host, private_token);
+    let result = check_gitlab(file, None, None);
     assert_eq!(result.is_err(), false);
 }
