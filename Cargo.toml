@@ -15,3 +15,6 @@ exitfailure = "0.5.1"
 reqwest = "0.9.19"
 serde = "1.0.97"
 serde_json = "1.0.40"
+
+[badges]
+travis-ci = { repository = "pradel/gitlab-ci-validate-rust", branch = "master" }
