@@ -87,3 +87,30 @@ fn check_gitlab(file: &str, host: &str, private_token: Option<&str>) -> Result<(
     println!("{} is valid", file);
     Ok(())
 }
+
+#[test]
+fn it_fail_if_file_not_found() {
+    let file = "test/doesnotexist.yml";
+    let host = "https://gitlab.com";
+    let private_token: Option<&str> = None;
+    let result = check_gitlab(file, host, private_token);
+    assert_eq!(result.is_err(), true);
+}
+
+#[test]
+fn it_fail_if_file_invalid() {
+    let file = "test/.invalid-gitlab-ci.yml";
+    let host = "https://gitlab.com";
+    let private_token: Option<&str> = None;
+    let result = check_gitlab(file, host, private_token);
+    assert_eq!(result.is_err(), true);
+}
+
+#[test]
+fn it_succeed_if_file_valid() {
+    let file = "test/.gitlab-ci.yml";
+    let host = "https://gitlab.com";
+    let private_token: Option<&str> = None;
+    let result = check_gitlab(file, host, private_token);
+    assert_eq!(result.is_err(), false);
+}

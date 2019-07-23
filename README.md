@@ -3,6 +3,7 @@
 Checks if your .gitlab-ci.yml file is valid.
 
 > This repository is a fork from my nodejs version https://github.com/pradel/gitlab-ci-validate.
+
 > I decided to create a simple cli tool to try Rust.
 
 ## Install
