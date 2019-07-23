@@ -96,32 +96,3 @@ fn check_gitlab(
     println!("{} is valid", file);
     Ok(())
 }
-
-#[test]
-fn it_fail_if_file_not_found() {
-    let file = "test/doesnotexist.yml";
-    let result = check_gitlab(file, None, None);
-    assert_eq!(result.is_err(), true);
-}
-
-#[test]
-fn it_fail_if_file_invalid() {
-    let file = "test/.invalid-gitlab-ci.yml";
-    let result = check_gitlab(file, None, None);
-    assert_eq!(result.is_err(), true);
-}
-
-#[test]
-fn it_fail_if_host_invalid() {
-    let file = "test/.gitlab-ci.yml";
-    let host = "https://google.com";
-    let result = check_gitlab(file, Some(host), None);
-    assert_eq!(result.is_err(), true);
-}
-
-#[test]
-fn it_succeed_if_file_valid() {
-    let file = "test/.gitlab-ci.yml";
-    let result = check_gitlab(file, None, None);
-    assert_eq!(result.is_err(), false);
-}
