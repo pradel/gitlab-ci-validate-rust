@@ -6,9 +6,7 @@ use std::process::Command;
 
 #[test]
 fn file_not_found() {
-    let mut cmd = Command::main_binary().unwrap();
-    cmd.arg("tests/doesnotexist.yml");
-    cmd.assert()
+    Command::new("./target/debug/gitlab-ci-validate").arg("tests/doesnotexist.yml").assert()
         .failure()
         .code(1)
         .stderr(predicate::str::similar(
@@ -18,9 +16,7 @@ fn file_not_found() {
 
 #[test]
 fn file_invalid() {
-    let mut cmd = Command::main_binary().unwrap();
-    cmd.arg("tests/.invalid-gitlab-ci.yml");
-    cmd.assert()
+    Command::new("./target/debug/gitlab-ci-validate").arg("tests/.invalid-gitlab-ci.yml").assert()
         .failure()
         .code(1)
         .stderr(predicate::str::similar(
@@ -30,9 +26,11 @@ fn file_invalid() {
 
 #[test]
 fn host_invalid() {
-    let mut cmd = Command::main_binary().unwrap();
-    cmd.arg("tests/.gitlab-ci.yml").arg("--host").arg("yo");
-    cmd.assert()
+    Command::new("./target/debug/gitlab-ci-validate")
+        .arg("tests/.gitlab-ci.yml")
+        .arg("--host")
+        .arg("yo")
+        .assert()
         .failure()
         .code(1)
         .stderr(predicate::str::similar(
@@ -42,9 +40,9 @@ fn host_invalid() {
 
 #[test]
 fn file_valid() {
-    let mut cmd = Command::main_binary().unwrap();
-    cmd.arg("tests/.gitlab-ci.yml");
-    cmd.assert()
+    Command::new("./target/debug/gitlab-ci-validate")
+        .arg("tests/.gitlab-ci.yml")
+        .assert()
         .success()
         .code(0)
         .stdout(predicate::str::similar("tests/.gitlab-ci.yml is valid\n"));
