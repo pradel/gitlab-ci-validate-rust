@@ -1,6 +1,6 @@
 [package]
 name = "gitlab-ci-validate"
-version = "0.0.4"
+version = "0.1.0"
 authors = ["pradel <pradel.leo@gmail.com>"]
 description = "Checks if your .gitlab-ci.yml file is valid."
 repository = "https://github.com/pradel/gitlab-ci-validate-rust"
