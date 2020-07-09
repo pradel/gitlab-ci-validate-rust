@@ -34,7 +34,7 @@ fn host_invalid() {
         .failure()
         .code(1)
         .stderr(predicate::str::similar(
-            "Error: relative URL without a base\n",
+            "Error: builder error: relative URL without a base\n",
         ));
 }
 
