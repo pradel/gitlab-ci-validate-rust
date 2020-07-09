@@ -16,7 +16,8 @@ struct GitlabResponse {
     errors: Vec<String>,
 }
 
-fn main() -> Result<(), ExitFailure> {
+#[tokio::main]
+async fn main() -> Result<(), ExitFailure> {
     // Define the cli options
     let matches = App::new("myapp")
         .version("0.0.1")
@@ -53,10 +54,10 @@ fn main() -> Result<(), ExitFailure> {
     // Gets a value for gitlab private_token if supplied by user
     let private_token = matches.value_of("private_token");
 
-    Ok(check_gitlab(file, host, private_token)?)
+    Ok(check_gitlab(file, host, private_token).await?)
 }
 
-fn check_gitlab(
+async fn check_gitlab(
     file: &str,
     host_param: Option<&str>,
     private_token: Option<&str>,
@@ -80,9 +81,14 @@ fn check_gitlab(
     }
 
     let client = reqwest::Client::new();
-    let mut res = client.post(&full_url).headers(headers).json(&map).send()?;
-
-    let data: GitlabResponse = res.json()?;
+    let data: GitlabResponse = client
+        .post(&full_url)
+        .headers(headers)
+        .json(&map)
+        .send()
+        .await?
+        .json()
+        .await?;
 
     // We check the response from gitlab
     if data.status == "invalid" {
