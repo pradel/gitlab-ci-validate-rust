@@ -57,6 +57,7 @@ async fn main() -> Result<(), ExitFailure> {
     Ok(check_gitlab(file, host, private_token).await?)
 }
 
+
 async fn check_gitlab(
     file: &str,
     host_param: Option<&str>,
